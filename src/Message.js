@@ -8,6 +8,7 @@ import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction'
 import Star from '@material-ui/icons/Star'
 import StarBorder from '@material-ui/icons/StarBorder'
 import Delete from '@material-ui/icons/Delete'
+import Tooltip from '@material-ui/core/Tooltip'
 import moment from 'moment'
 import 'moment/locale/pl'
 import { auth } from './firebaseConfig'
@@ -26,19 +27,32 @@ const Message = (props) => {
                 />
             </ListItemAvatar>
             <ListItemText
-                primary={props.message.author.displayName + ' | ' + moment(props.message.date).fromNow()}
+                primary={
+                    <div>
+                        <span>
+                            {props.message.author.displayName} {' '}
+                        </span>
+                        <Tooltip
+                        title={moment(props.message.date).format('lll')}
+                        >
+                        <span style={{fontSize: 'small', color: 'grey'}}>
+                            {moment(props.message.date).fromNow()}
+                        </span>
+                        </Tooltip>
+                    </div>
+                }
                 secondary={props.message.text}
             />
             <ListItemSecondaryAction>
                 <IconButton
                     aria-label={'Comments'}
-                    onClick={() => props.toggleFav(props.message)} 
+                    onClick={() => props.toggleFav(props.message)}
                 >
                     {
                         props.message.isFav && props.message.isFav[auth.currentUser.uid] ?
-                            <Star/>
+                            <Star />
                             :
-                            <StarBorder/>
+                            <StarBorder />
                     }
                 </IconButton>
                 <IconButton

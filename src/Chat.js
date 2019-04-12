@@ -11,7 +11,8 @@ class Chat extends Component {
         messages: null,
         newMessageText: '',
         isSackbarOpen: false,
-        snackbarMessage: ''
+        snackbarMessage: '',
+        isFavFilterActive: false,
     }
 
     componentDidMount = () => {
@@ -19,6 +20,10 @@ class Chat extends Component {
             'value',
             snapshot => this.setState({ messages: snapshot.val() })
         )
+    }
+
+    onLogOutClick = () => {
+        auth.signOut()
     }
 
     onNewMessageTextChange = (event) => {
@@ -49,21 +54,25 @@ class Chat extends Component {
     onDeleteMessage = (id) => {
         database.ref(`/JFDDL7/chat/${id}`).remove()
     }
-
-    componentWillUnmount = () => {
-        database.ref('/JFDDL7/chat').off()
-    }
-
+    
     toggleFav = (message) => {
         const clickedMessageId = message.key
         const user = auth.currentUser.uid
         const ref = database.ref(`/JFDDL7/chat/${clickedMessageId}/isFav/${user}`)
-
+        
         if (message.isFav && message.isFav[user]) {
             ref.remove()
         } else {
             ref.set(true)
         }
+    }
+    
+    toggleFavFilterActive = () => this.setState({
+        isFavFilterActive: !this.state.isFavFilterActive
+    })
+    
+    componentWillUnmount = () => {
+        database.ref('/JFDDL7/chat').off()
     }
 
     render() {
@@ -73,11 +82,15 @@ class Chat extends Component {
                     messages={this.state.messages}
                     onDeleteMessage={this.onDeleteMessage}
                     toggleFav={this.toggleFav}
+                    isFavFilterActive={this.state.isFavFilterActive} 
+                    onLogOutClick={this.onLogOutClick}                   
                 />
                 <NewMessageForm
                     newMessageText={this.state.newMessageText}
                     onNewMessageTextChange={this.onNewMessageTextChange}
                     onSendNewMessage={this.onSendNewMessage}
+                    isFavFilterActive={this.state.isFavFilterActive}
+                    toggleFavFilterActive={this.toggleFavFilterActive}
                 />
                 <Snackbar
                     open={this.state.isSackbarOpen}
@@ -86,7 +99,7 @@ class Chat extends Component {
                     message={this.state.snackbarMessage}
                     anchorOrigin={{
                         vertical: 'top',
-                        horizontal: 'right',
+                        horizontal: 'center',
                     }}
                     TransitionComponent={Fade}
                 />

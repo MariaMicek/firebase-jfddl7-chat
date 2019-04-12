@@ -45,13 +45,13 @@ class Auth extends Component {
                         <div
                             style={styles.root}
                         >
-                            <h1>THE BEST CHAT</h1>
+                            <h1>JFDDL7 CHAT</h1>
                             <Button
                                 variant={'contained'}
                                 color={'secondary'}
                                 onClick={this.onLogInClick}
                             >
-                                LOG IN BY GOOGLE
+                                ZALOGUJ SIĘ PRZEZ KONTO GOOGLE
                             </Button>
                         </div>
                 }

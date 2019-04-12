@@ -1,6 +1,7 @@
 import React from 'react'
 import Message from './Message'
 import List from '@material-ui/core/List'
+import { auth } from './firebaseConfig'
 
 const MessageList = (props) => {
     const messagesArray = (
@@ -15,6 +16,10 @@ const MessageList = (props) => {
             )
     )
 
+    const filteredMessages = messagesArray.filter(
+        message => message.isFav && message.isFav[auth.currentUser.uid]
+    )
+
     return (
         <List>
             {
@@ -24,6 +29,7 @@ const MessageList = (props) => {
                             key={message.key}
                             message={message}
                             onDeleteMessage={props.onDeleteMessage}
+                            toggleFav={props.toggleFav}
                         />
                     )
                 ).reverse()

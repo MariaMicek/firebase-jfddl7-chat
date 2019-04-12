@@ -3,19 +3,19 @@ import TextField from '@material-ui/core/TextField'
 import Paper from '@material-ui/core/Paper'
 
 const styles = {
-    input: {
+    paper: {
         position: 'fixed',
         bottom: 0,
         width: '100vw',
-        padding: '15px',
-        boxSizing: 'border-box'
+        boxSizing: 'border-box',
+        padding: '15px 30px 15px 15px'
     }
 }
 
 const NewMessageForm = (props) => {
     return (
         <Paper
-            style={styles.input}        
+            style={styles.paper}        
         >
             <form
                 onSubmit={event => {
@@ -25,6 +25,7 @@ const NewMessageForm = (props) => {
             >
                 <TextField
                     fullWidth={true}
+                    style={styles.input}
                     placeholder={'Wpisz swoją wiadomość'}
                     value={props.NewMessageText}
                     onChange={(event) => props.onNewMessageTextChange(event)}

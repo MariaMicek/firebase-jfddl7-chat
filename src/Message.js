@@ -10,6 +10,7 @@ import StarBorder from '@material-ui/icons/StarBorder'
 import Delete from '@material-ui/icons/Delete'
 import moment from 'moment'
 import 'moment/locale/pl'
+import { auth } from './firebaseConfig'
 
 moment.locale('pl')
 
@@ -29,12 +30,17 @@ const Message = (props) => {
                 secondary={props.message.text}
             />
             <ListItemSecondaryAction>
-                {/* <IconButton
+                <IconButton
                     aria-label={'Comments'}
+                    onClick={() => props.toggleFav(props.message)} 
                 >
-                    <Star />
-                    <StarBorder />
-                </IconButton> */}
+                    {
+                        props.message.isFav && props.message.isFav[auth.currentUser.uid] ?
+                            <Star/>
+                            :
+                            <StarBorder/>
+                    }
+                </IconButton>
                 <IconButton
                     aria-label={'Comments'}
                     onClick={() => props.onDeleteMessage(props.message.key)}

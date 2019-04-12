@@ -39,8 +39,8 @@ class Chat extends Component {
         }
 
         database.ref('/JFDDL7/chat').push(newMessage)
-            .then(() => this.setState({ 
-                newMessageText: '', 
+            .then(() => this.setState({
+                newMessageText: '',
                 isSackbarOpen: true,
                 snackbarMessage: 'Wiadomość wysłana!'
             }))
@@ -54,12 +54,25 @@ class Chat extends Component {
         database.ref('/JFDDL7/chat').off()
     }
 
+    toggleFav = (message) => {
+        const clickedMessageId = message.key
+        const user = auth.currentUser.uid
+        const ref = database.ref(`/JFDDL7/chat/${clickedMessageId}/isFav/${user}`)
+
+        if (message.isFav && message.isFav[user]) {
+            ref.remove()
+        } else {
+            ref.set(true)
+        }
+    }
+
     render() {
         return (
             <div>
                 <MessageList
                     messages={this.state.messages}
                     onDeleteMessage={this.onDeleteMessage}
+                    toggleFav={this.toggleFav}
                 />
                 <NewMessageForm
                     newMessageText={this.state.newMessageText}
@@ -68,7 +81,7 @@ class Chat extends Component {
                 />
                 <Snackbar
                     open={this.state.isSackbarOpen}
-                    onClose={() => this.setState({isSackbarOpen: false})}
+                    onClose={() => this.setState({ isSackbarOpen: false })}
                     autoHideDuration={2000}
                     message={this.state.snackbarMessage}
                     anchorOrigin={{

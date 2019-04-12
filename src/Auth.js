@@ -49,7 +49,6 @@ class Auth extends Component {
                             <Button
                                 variant={'contained'}
                                 color={'secondary'}
-                                style={styles.button}
                                 onClick={this.onLogInClick}
                             >
                                 LOG IN BY GOOGLE
